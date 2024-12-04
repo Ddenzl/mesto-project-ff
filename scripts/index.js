@@ -11,18 +11,23 @@
 
 
 const cardTemplate = document.querySelector("#card-template").content;
-const placesList = document.querySelector(".places__list");
+const cardsContainer = document.querySelector(".places__list");
 
-function createCard(data) {
+function deleteCard(cardElement) {
+  cardElement.remove();
+}
+
+function createCard(data, deleteCardHandler) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
+  const cardImage = cardElement.querySelector(".card__image");
 
-  cardElement.querySelector(".card__image").src = data.link;
-  cardElement.querySelector(".card__image").alt = data.name;
+  cardImage.src = data.link;
+  cardImage.alt = data.name;
   cardElement.querySelector(".card__title").textContent = data.name;
 
-  deleteButton.addEventListener("click", () => {
-    cardElement.remove();
+  deleteButton.addEventListener("click", () => { 
+    deleteCardHandler(cardElement);
   });
 
   return cardElement;
@@ -30,8 +35,8 @@ function createCard(data) {
 
 function renderCards(cards) {
   cards.forEach(card => {
-      const addCard = createCard(card);
-      placesList.append(addCard);
+      const addCard = createCard(card, deleteCard);
+      cardsContainer.append(addCard);
   });
 }
 
