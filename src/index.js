@@ -57,7 +57,7 @@ profileEditButton.addEventListener("click", () => {
 addButton.addEventListener("click", () => openModal(newCardPopup));
 
 closeButtons.forEach((btn) => {
-  const popup = evt.target.closest(".popup");
+  const popup = btn.closest(".popup");
   btn.addEventListener("click", (evt) => {
     closeModal(popup);
   });
