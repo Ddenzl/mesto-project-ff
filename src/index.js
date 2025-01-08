@@ -10,7 +10,7 @@ const addButton = document.querySelector(".profile__add-button");
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const closeButtons = document.querySelectorAll(".popup__close");
 const imagePopup = document.querySelector(".popup_type_image");
-const cardImagePopup = imagePopup.querySelector(".popup__image");
+const cardImage = imagePopup.querySelector(".popup__image");
 const caption = imagePopup.querySelector(".popup__caption");
 const profileForm = editPopup.querySelector(".popup__form");
 const nameInput = profileForm.querySelector(".popup__input_type_name");
@@ -30,8 +30,9 @@ function toggleLike(likeBtn) {
   likeBtn.classList.toggle("card__like-button_is-active");
 }
 
-function handleImageClick(image) {
-  cardImagePopup.src = image.src;
+function showImage(image) {
+  cardImage.src = image.src;
+  cardImage.alt = image.alt;
   caption.textContent = image.alt;
   openModal(imagePopup);
 }
@@ -39,7 +40,7 @@ function handleImageClick(image) {
 // --------------------------------Добавление карточек-------------------------------------------------
 function renderCards(cards) {
   cards.forEach((card) => {
-    const addCard = createCard(card, deleteCard, toggleLike, handleImageClick);
+    const addCard = createCard(card, deleteCard, toggleLike, showImage);
     cardsContainer.prepend(addCard);
   });
 }
@@ -56,8 +57,8 @@ profileEditButton.addEventListener("click", () => {
 addButton.addEventListener("click", () => openModal(newCardPopup));
 
 closeButtons.forEach((btn) => {
+  const popup = evt.target.closest(".popup");
   btn.addEventListener("click", (evt) => {
-    const popup = evt.target.closest(".popup");
     closeModal(popup);
   });
 });
@@ -71,8 +72,7 @@ function handleEditProfile(evt) {
   profileName.textContent = nameValue;
   profileDescription.textContent = descriptionValue;
 
-  const popup = evt.target.closest(".popup");
-  closeModal(popup);
+  closeModal(editPopup);
 }
 
 profileForm.addEventListener("submit", handleEditProfile);
