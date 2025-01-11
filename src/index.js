@@ -1,5 +1,5 @@
 import { initialCards } from "./data/cards.js";
-import { createCard } from "./components/card.js";
+import { createCard, deleteCard, toggleLike } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import "./index.css";
 
@@ -22,14 +22,6 @@ const cardNameInput = newCardForm.querySelector(".popup__input_type_card-name");
 const cardLinkInput = newCardForm.querySelector(".popup__input_type_url");
 
 // -------------------------------Коллбэки создания карточки-------------------------------------------
-function deleteCard(cardElement) {
-  cardElement.remove();
-}
-
-function toggleLike(likeBtn) {
-  likeBtn.classList.toggle("card__like-button_is-active");
-}
-
 function showImage(image) {
   cardImage.src = image.src;
   cardImage.alt = image.alt;
@@ -58,7 +50,7 @@ addButton.addEventListener("click", () => openModal(newCardPopup));
 
 closeButtons.forEach((btn) => {
   const popup = btn.closest(".popup");
-  btn.addEventListener("click", (evt) => {
+  btn.addEventListener("click", () => {
     closeModal(popup);
   });
 });
@@ -89,7 +81,7 @@ newCardForm.addEventListener("submit", (evt) => {
     link: imagelink,
   };
 
-  const newCard = createCard(newCardData, deleteCard, toggleLike, handleImageClick);
+  const newCard = createCard(newCardData, deleteCard, toggleLike, showImage);
   cardsContainer.prepend(newCard);
   closeModal(newCardPopup);
   newCardForm.reset();
