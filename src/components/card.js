@@ -25,12 +25,14 @@ export function createCard(data, cbHandleDeleteCard, cbCardLike, cbShowImage, us
   hasLikeCard(data.likes, userId) &&
     setLike(likeButton, likeCounter, data.likes.length)
 
-  !isMyCard(data, userId) && deleteButton.remove();
-
-  deleteButton.addEventListener("click", () => {
-    cbHandleDeleteCard(cardElement, data._id);
-  });
-
+  if (!isMyCard(data, userId)) {
+    deleteButton.remove();
+  } else {
+    deleteButton.addEventListener("click", () => {
+      cbHandleDeleteCard(cardElement, data._id);
+    });
+  }
+ 
   likeButton.addEventListener("click", () => {
     cbCardLike(likeButton, likeCounter, data._id);
   });

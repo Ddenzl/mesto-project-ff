@@ -1,20 +1,16 @@
-export const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
+
 // ----------------------------------------Функция для показа ошибки ввода--------------------------------------------------------------
 const showInputError = (formElement, inputElement, errorMessage, validationConfig) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
+  const formElementBox = formElement.getBoundingClientRect();
   const inputElementBox = inputElement.getBoundingClientRect();
+  const coordY = inputElementBox.y - formElementBox.y + inputElementBox.height + 5;
+  const coordX = inputElementBox.x - formElementBox.x 
   errorElement.textContent = errorMessage;
   errorElement.classList.add(validationConfig.errorClass);
-  errorElement.style.top = `${inputElementBox.bottom}px`;
-  errorElement.style.left = `${inputElementBox.left}px`;
+  errorElement.style.top = coordY + "px";
+  errorElement.style.left = coordX + "px";
 };
 // -----------------------------------------Функция для скрытия ошибки ввода-------------------------------------------------------------
 const hideInputError = (formElement, inputElement, validationConfig) => {
@@ -52,7 +48,7 @@ const setEventListeners = (formElement, validationConfig) => {
   });
 };
 // ------------------------------------------Функция для включения валидации форм------------------------------------------------------------
-export const enableValidation = () => {
+export const enableValidation = (validationConfig) => {
   const formList = [...document.querySelectorAll(validationConfig.formSelector)];
   formList.forEach((formElement) => {
     setEventListeners(formElement, validationConfig);
@@ -73,7 +69,7 @@ const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   }
 };
 // ---------------------------------------------Функция для очистки валидации-------------------------------------------------------------------------
-export const clearValidation = (formElement) => {
+export const clearValidation = (validationConfig, formElement) => {
   const inputList = [...formElement.querySelectorAll(validationConfig.inputSelector)];
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
